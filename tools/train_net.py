@@ -49,6 +49,27 @@ def parse_args():
     parser.add_argument('--set', dest='set_cfgs',
                         help='set config keys', default=None,
                         nargs=argparse.REMAINDER)
+    parser.add_argument('--rpn_anchor_scale', dest='rpn_anchor_scale',
+                        help='scale of anchors to creat',
+                        default='8,16,32', type=str)
+    parser.add_argument('--rpn_anchor_ratio', dest='rpn_anchor_ratio',
+                        help='ratio of anchor to creat',
+                        default='0.5,1,2', type=str)
+    parser.add_argument('--rpn_min_size', dest='rpn_min_size',
+                        help='minimun size of an anchor choosed by rpn',
+                        default=16, type=int)
+    parser.add_argument('--rpn_positive_overlap', dest='rpn_positive_overlap',
+                        help='rpn positive overlap',
+                        default=0.7)
+    parser.add_argument('--rpn_negative_overlap', dest='rpn_nagetive_overlap',
+                        help='rpn negative overlap',
+                        default=0.3)
+    parser.add_argument('--bg_thresh_hi', dest='bg_thresh_hi',
+                        help='Overlap threshold for a ROI to be considered background',
+                        default=0.5)
+    parser.add_argument('--fg_thresh', dest='fg_thresh',
+                        help='Overlap threshold for a ROI to be considered foreground (if >= FG_THRESH)',
+                        default=0.5)
 
     if len(sys.argv) == 1:
         parser.print_help()
@@ -86,6 +107,29 @@ if __name__ == '__main__':
         cfg_from_file(args.cfg_file)
     if args.set_cfgs is not None:
         cfg_from_list(args.set_cfgs)
+
+
+    #il faut ajouter et changer les portfolio_id
+    if args.rpn_anchor_scale != '8,16,32' :
+        list_scale = [int(x) for x in args.rpn_anchor_scale.split(",")]
+        cfg.RPN_ANCHOR_SCALES = np.array(list_scale)
+    if args.rpn_anchor_ratio != '0.5,1,2' :
+        list_ratio = [float(x) for x in args.rpn_anchor_ratio.split(",")]
+        cfg.RPN_ANCHOR_RATIOS = list_ratio
+    if args.rpn_min_size != 16 :
+        cfg.TRAIN.RPN_MIN_SIZE = args.rpn_min_size
+        cfg.TEST.RPN_MIN_SIZE = args.rpn_min_size
+    if float(args.rpn_positive_overlap) != 0.7 :
+        cfg.TRAIN.POSITIVE_OVERLAP = float(args.rpn_positive_overlap)
+    if float(args.rpn_negative_overlap) != 0.3 :
+        cfg.TRAIN.NEGATIVE_OVERLAP = float(args.rpn_negative_overlap)
+    if float(args.bg_thresh_hi) != 0.5 :
+        cfg.TRAIN.BG_THRESH_HI = float(args.bg_thresh_hi)
+    if float(args.fg_thresh) != 0.5 :
+        cfg.TRAIN.FG_THRESH = float(args.fg_thresh)
+
+
+
 
     cfg.GPU_ID = args.gpu_id
 

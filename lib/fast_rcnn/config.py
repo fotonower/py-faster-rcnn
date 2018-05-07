@@ -123,6 +123,10 @@ __C.TRAIN.RPN_BBOX_INSIDE_WEIGHTS = (1.0, 1.0, 1.0, 1.0)
 # Set to -1.0 to use uniform example weighting
 __C.TRAIN.RPN_POSITIVE_WEIGHT = -1.0
 
+# add new param
+__C.RPN_ANCHOR_RATIOS = (0.5,1,2)
+__C.RPN_ANCHOR_SCALES = (8,16,32)
+
 
 #
 # Testing options
@@ -162,6 +166,7 @@ __C.TEST.RPN_PRE_NMS_TOP_N = 6000
 __C.TEST.RPN_POST_NMS_TOP_N = 300
 # Proposal height and width both need to be greater than RPN_MIN_SIZE (at orig image scale)
 __C.TEST.RPN_MIN_SIZE = 16
+
 
 
 #
